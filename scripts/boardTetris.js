@@ -40,3 +40,39 @@ export class BoardTetris extends Grid{
         return !(this.isRowEmpty(0));
     }
 }
+
+export class BoardNext extends Grid{
+    constructor(canvas, rows,cols,cellsize,space,listTetrominos){
+        super(canvas, rows, cols, cellsize, space);
+        this.listTetrominos = listTetrominos;
+        this.updateMatriz();
+    }
+    updateMatriz(){
+        this.restartMatriz();
+        let cont = 0;
+        for(let i = 0; i < this.listTetrominos.length; i++){
+            const shape = this.listTetrominos[i].currentShape();
+            for(let j = 0; j<shape.length; j++){
+                this.matriz[shape[j].row + cont][shape[j].column] = this.listTetrominos[i].id;
+            }
+            cont+=3;
+        }
+    }
+}
+
+export class BoardHold extends Grid{
+    constructor(canvas, rows,cols,cellsize,space){
+        super(canvas, rows, cols, cellsize, space);
+        this.tetromino = null;
+        this.updateMatriz();
+    }
+    updateMatriz(){
+        if(this.tetromino==null) return;
+        this.tetromino.reset();
+        this.restartMatriz();
+        const shape = this.tetromino.currentShape();
+        for(let i = 0; i < shape.length; i++){
+            this.matriz[shape[i].row][shape[i].column] = this.tetromino.id;
+        }
+    }
+}

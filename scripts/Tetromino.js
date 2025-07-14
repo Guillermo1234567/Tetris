@@ -195,6 +195,14 @@ class TetrominosBag{
         this.canvas =  canvas;
         this.cellSize = cellSize;
         this.bag = [];
+        this.threeNextTetrominos = [];
+        this.init();
+    }
+
+    init(){
+        for(let i=0; i<3; i++){
+            this.threeNextTetrominos.push(this.getNextTetromino());
+        }
     }
 
     fillBag(){
@@ -220,11 +228,27 @@ class TetrominosBag{
         } 
     }
 
-    nextTetromino(){
+    getNextTetromino(){
         if(this.bag.length === 0){
             this.fillBag();
         }
         return this.bag.pop();
+    }
+
+    nextTetromino(){
+        const next = this.threeNextTetrominos.shift();
+        this.threeNextTetrominos.push(this.getNextTetromino());
+        return next;
+    }
+
+    getThreeNextTetromino(){
+        return this.threeNextTetrominos;
+    }
+
+    reset(){
+        this.bag = [];
+        this.threeNextTetrominos = [];
+        this.init();
     }
 }
 
